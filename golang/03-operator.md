@@ -541,7 +541,10 @@ fmt.Println(b) // 0xc0820062d0 (메모리 주소)
 ```go
 a := new(int)
 *a = 1 // a에 저장된 메모리에 접근하여 1을 저장
-fmt.Println(*a) // 1: a에 저장된 메모리에 접근하여 값을 가져옴
+fmt.Println(*a) // a에 저장된 메모리에 접근하여 값을 가져옴
+```
+```terminal
+1
 ```
 
   </td>
@@ -558,7 +561,10 @@ c <- 1 // 채널 c에 1을 보냄
 }()
 a := <-c // 채널 c에서 값을 가져와서 a에 대입
 
-fmt.Println(a) // 1
+fmt.Println(a)
+```
+```terminal
+1
 ```
 
   </td>

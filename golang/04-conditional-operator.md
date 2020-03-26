@@ -46,7 +46,10 @@ case "*":
     fmt.Println("Multiply")
 case "/":
     fmt.Println("Division")
-} // Plus
+}
+```
+```terminal
+Plus
 ```
 
 # Go의 반복문
@@ -58,7 +61,19 @@ var i = 0
 for i < 10 {
     fmt.Println(i)
     i++
-} // print 0 to 9
+}
+```
+```terminal
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 ```
 
 `for` 문의 조건문을 명시하지 않는다면 `for true {...}`과 같이 무한 루프로 동작한다. 때문에 이 경우엔 `break` 키워드를 잘 사용해야한다.
@@ -69,7 +84,19 @@ for {
     if (i == 10)
         break
     fmt.Println(i)
-} // print 0 to 9
+}
+```
+```terminal
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 ```
 
 물론 익숙한 for 문처럼 `for 전처리문; 조건문; 후처리문`의 형식으로 사용할 수도 있다.
@@ -77,5 +104,17 @@ for {
 ```go
 for i := 0; i < 10; i++ {
     fmt.Println(i)
-} // print 0 to 9
+}
+```
+```terminal
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 ```

@@ -27,12 +27,14 @@ Golang에선 리턴값을 여러개로 설정할 수 있다.
 func main() {
     a, b := change(0, 1)
 
-    fmt.Println(a, b) // print: 1 0
-}
+    fmt.Println(a, b)
 
 func change(x, y int) (int, int) {
     return y, x
 }
+```
+```terminal
+1 0
 ```
 
 주의할 점은 golang에서 파라메터는 항상 값으로서 전달된다. 레퍼런스 참조를 사용하기 위해선 포인터를 명시적으로 사용해야한다.
