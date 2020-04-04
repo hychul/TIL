@@ -10,7 +10,7 @@ Golang은 객체지향<sup>Object Oriented Programming</sup>을 완전하게 지
 
 덕 타이핑이란 어떤 물체가 오리인지 확인하기 위해선 오리인지 검사하는 것이 아닌 오리처럼 울고 걷고 행동하는지 검증하라는 개념으로 시작한다. Golang는 덕 타이핑을 인터페이스<sup>interface</sup>를 통해서 지원한다.
 
-## 인터페이스
+### 인터페이스
 
 Golang의 인터페이스를 통해서 다형성을 위한 덕 타이핑을 지원한다고 했는데, 이 때문에 Golang의 인터페이스는 다른 객체지향형 언어와 달리 명시적으로 인터페이스를 구현한다는 표시를 할 필요 없이 인터페이스 내의 함수를 구현하는 것만으로 그 인터페이스를 구현하는 것으로 인식된다.
 
@@ -31,10 +31,92 @@ type Duck interface {
 
 객체지향에서 상속은 어떤 클래스의 구현들을 재사용하기 위해 사용된다. 때문에 인터페이스가 아닌 클래스나 추상 클래스를 상속하여 그 기능을 변형, 확장하여 사용한다.
 
-Golang의 경우 클래스 상속, 즉, 구조체 상속을 지원하지 않지만 인터페이스와 구조체 내장을 동시에 이용하면 기존의 구조체를 확장하여 사용할 수 있다.
+Golang의 경우 클래스 상속, 즉, 구조체 상속을 지원하지 않지만 인터페이스와 내장 구조체를 통해 기존의 구조체를 확장하여 사용할 수 있다.
+
+```go
+type Duck {}
+
+func (d Duck) Cry() string {
+    return "quack"
+}
+
+func (d Duck) Walk() {
+    fmt.Println("walk")
+}
+
+type Chicken struct { Duck }
+
+func main() {
+	c := Chicken{}
+
+	fmt.Println(c.Cry())
+	c.Walk()
+}
+```
+```terminal
+quack
+walk
+```
 
 ### 메서드 추가
 
+내장 구조체를 통해 새로운 구조체를 만들고 해당 구조체에 새로운 메서드를 추가하면 된다.
+
+```go
+...
+type Chicken struct { Duck }
+
+func (c Chicken) Fly() {
+    fmt.Println("fly")
+}
+
+func main() {
+    c := Chicken{}
+
+	fmt.Println(c.Cry())
+    c.Walk()
+    c.Fly()
+}
+```
+```terminal
+quack
+walk
+fly
+```
+
 ### 오버라이딩
 
+내장 구조체를 통해 내장된 구조체의 메서드 중 오버라이딩하려는 메서드를 새로 작성하면된다.
+
+
+```go
+...
+type Chicken struct { Duck }
+
+func (c Chicken) Cry() string {
+    return "cock-a-doodle-doo"
+}
+
+func main() {
+    c := Chicken{}
+
+	fmt.Println(c.Cry())
+    c.Walk()
+}
+```
+```terminal
+cock-a-doodle-doo
+walk
+```
+
 ## 캡슐화
+
+객체안에 있는 정보를 외부로 부터 숨겨 보호하기 위해 사용하는 것이 캡슐화이다. 일반적인 언어들에서 `public` 이나 `private` 과 같은 접근자를 통해 이런 객체 내부로의 접근을 제한하지만 Golang의 경우 이러한 접근자가 존재하지 않는다.
+
+대신 01장에서 언급한 것과 같이 대문자 혹은 소문자를 통해 다른 패키지로부터의 접근을 제한한다.
+
+1.4부턴 패키지의 접근 제한[^1.4-internal-package]도 추가되었다. 'internal' 디렉토리를 생성하고 그 안에 package를 개발하면, 'internal' 디렉토리가 위치하는 바로 위 루트의 모든 하위 package들에서만 internal의 public 함수를 사용할 수 있게 된다. 이러한 rule은 go command에 의해 강제된다.
+
+이를 통해 각 패키지 내부에서 공통적으로 사용되는 public 함수들이 여러 패키지를 사용하여 개발을 할때에도 충돌하지 않고 동작될 수 있게 되었다.
+
+[^1.4-internal-package]:[1.4 internal package Google Reference](https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit)
