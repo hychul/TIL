@@ -1,6 +1,6 @@
 # Go의 OOP
 
-Golang은 객체지향<sup>Object Oriented Programming</sup>을 완전하게 지원하지 않는다. 
+Golang은 객체지향<sup>Object Oriented Programming</sup>을 완전하게 지원하지 않는다. 하지만 Golang에서 지원하는 구조체를 통해 기존의 객체지향의 언어보다 더 유연하게 오브젝트를 설계하고 사용할 수 있다.
 
 ## 다형성
 
