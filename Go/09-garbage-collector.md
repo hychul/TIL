@@ -18,23 +18,23 @@ C언어에선 메모리를 크게 스택 메모리와 힙 메모리로 구분하
 
 하지만 GC가 있다고 메모리 릭<sup>Memory Leak</sup>이 발생하지 않는 것이 아니다. GC는 아무도 참조하지 않는 변수인 Dangling Pointer를 관리하지만, 특정 객체에서 사용하지 않을 변수들을 들고있는다면 GC는 참조하고 있는 변수라고 생각하고 해당 메모리를 반환하지 않는다.
 
-## Golang의 GC
+## Go의 GC
 
-앞서 언급한 Java와 비교했을 때 Golang의 GC는 약간의 차이를 갖는다.
+앞서 언급한 Java와 비교했을 때 Go의 GC는 약간의 차이를 갖는다.
 
 ### 압축<sup>Compaction</sup>
 
 GC는 크게 정적 유형과 동적 유형으로 나뉜다.
 
-정적 유형의 GC는 heap 내의 변수들을 재배치하지 않는다. Golang은 Mark & Sweep을 통한 GC를 제공하는데 이는 정적 유형 GC에 속한다. heap 내의 변수들을 재배치하지 않는 경우 메모리의 할당과 해제(GC)가 반복될 경우 메모리가 파편화 되어 성능이 악화되는 문제가 있다.
+정적 유형의 GC는 heap 내의 변수들을 재배치하지 않는다. Go는 Mark & Sweep을 통한 GC를 제공하는데 이는 정적 유형 GC에 속한다. heap 내의 변수들을 재배치하지 않는 경우 메모리의 할당과 해제(GC)가 반복될 경우 메모리가 파편화 되어 성능이 악화되는 문제가 있다.
 
 동적 유형의 GC는 heap 내의 변수를 재배치하여 heap을 압축한다. HotSpot VM의 GC에서 사용되는 copy GC의 경우 동적 유형의 GC이다. 동적 유형의 GC에서는 메모리 단편화를 피할 수 있고, 새로운 메모리 할당이 필요한 경우 압축된 heap의 마지막 영역부터 메모리를 할당할 수 있어 고속 메모리 할당이 가능하다.
 
-#### Golang이 힙영역을 압축하지 않는 이유
+#### Go이 힙영역을 압축하지 않는 이유
 
-Golang도 처음엔 장점을 갖고있는 동적 유형의 GC로 기획되었지만 1.4 버전에서 C와 어셈블리로 작성된 Golang의 코드들을 Golang으로 재작성하는 과정을 거치면서 개발 기간의 제약이 걸리게 되었다. 그리고 추후에 TCMalloc 기반의 메모리 할당자를 도입하여 메모리 단편화와 할당 속도 문제를 해결했다.
+Go도 처음엔 장점을 갖고있는 동적 유형의 GC로 기획되었지만 1.4 버전에서 C와 어셈블리로 작성된 Go의 코드들을 Go로 재작성하는 과정을 거치면서 개발 기간의 제약이 걸리게 되었다. 그리고 추후에 TCMalloc 기반의 메모리 할당자를 도입하여 메모리 단편화와 할당 속도 문제를 해결했다.
 
-> [In 1.4, much of the code has been translated to Go ](https://golang.org/doc/go1.4#runtime)
+> [In 1.4, much of the code has been translated to Go ](https://Go.org/doc/go1.4#runtime)
 >
 > [This was originally based on tcmalloc, but has diverged quite a bit. – malloc.go](http://goog-perftools.sourceforge.net/doc/tcmalloc.html)
 
@@ -55,10 +55,10 @@ Java8 HotSpot VM에선 모든 GC가 세대별 GC를 제공한다.
 
 따라서 세대별 GC를 위의 예시와 같은 문제를 해결하기 위해선 root로 부터의 레퍼런스 카운터 뿐만 아니라 올드 영역에서 신규 영역간의 참조에 대한 추가적인 정보가 필요하다. 이러한 부수적인 처리를 Write Barrier라고 한다.
 
-#### Golang에서 세대별 GC가 없는 이유
+#### Go에서 세대별 GC가 없는 이유
 
-일반적으로 Write Barrier라는 오버헤드가 존재하지만 세대병 GC를 적용하면 이보다 큰 효용성을 얻을 수 있기 때문에 이를 적용하지만 Golang에서 write barrier에대한 오버헤드를 허용하지 않았다.
+일반적으로 Write Barrier라는 오버헤드가 존재하지만 세대병 GC를 적용하면 이보다 큰 효용성을 얻을 수 있기 때문에 이를 적용하지만 Go에서 write barrier에대한 오버헤드를 허용하지 않았다.
 
-또한, Golang은 컴파일러 수준에서 사용되지 않는 변수들을 분석하는 성능이 우수하고, 필요한 경우 heap 영역에 메모리가 할당되지 않도록 유저가 제어할 수 있도록 하기 때문에 일반적으로 수명이 짧은 변수는 힙이 아닌 스택영역에 할당된다. 때문에 세대별 GC로 얹을 수 있는 이익이 일반적인 runtime GC에 비해 적다.
+또한, Go는 컴파일러 수준에서 사용되지 않는 변수들을 분석하는 성능이 우수하고, 필요한 경우 heap 영역에 메모리가 할당되지 않도록 유저가 제어할 수 있도록 하기 때문에 일반적으로 수명이 짧은 변수는 힙이 아닌 스택영역에 할당된다. 때문에 세대별 GC로 얹을 수 있는 이익이 일반적인 runtime GC에 비해 적다.
 
-물론 수명이 긴 변수에 대한 GC에서 매번 GC 스캔을 하는 소모적인 작업이 남아있지만, Golang의 GC는 병렬적으로 수행되기 때문에 합리적인 결정이라고 생각한다고 Google의 lan Lance Taylor가 [Why golang garbage-collector not implement Generational and Compact gc?](https://groups.google.com/forum/#!topic/golang-nuts/KJiyv2mV2pU)에서 언급했다.
+물론 수명이 긴 변수에 대한 GC에서 매번 GC 스캔을 하는 소모적인 작업이 남아있지만, Go의 GC는 병렬적으로 수행되기 때문에 합리적인 결정이라고 생각한다고 Google의 lan Lance Taylor가 [Why Go garbage-collector not implement Generational and Compact gc?](https://groups.google.com/forum/#!topic/Go-nuts/KJiyv2mV2pU)에서 언급했다.

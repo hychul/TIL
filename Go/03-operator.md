@@ -19,7 +19,7 @@ var c int = b
 const d string = "Hello, world!"
 ```
 
-Golang에선 다중 대입도 지원합니다.
+Go에선 다중 대입도 지원합니다.
 
 ```go
 var a1, a2, a3, a4 = 1, 2, 3, 4
