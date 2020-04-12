@@ -13,7 +13,7 @@ http://golang.org 에서 받을 수 있다.
 설치 프로그램으로 Go를 설치한 설치 확인을 위해서 terminal을 열어 `go version`을 입력하면 설치된 Go에 대한 정보가 출력된다.
 
 ```terminal
-go version
+$ go version
 go version go1.14 windows/amd64
 ```
 
