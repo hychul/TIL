@@ -43,3 +43,21 @@ func TestUsers(t *testing.T) {
 		t.Fatal("Failed!: response body is not contained \"Get UserInfo\"")
 	}
 }
+
+func TestGetUserInfo(t *testing.T) {
+	ts := httptest.NewServer(NewHandler())
+	defer ts.Close()
+
+	res, err := http.Get(ts.URL + "/users/1")
+	if err != nil {
+		t.Fatal("Failed!: get index has error")
+	}
+	if res.StatusCode != http.StatusOK {
+		t.Fatal("Failed!: status code is not OK", res.StatusCode)
+	}
+
+	data, _ := ioutil.ReadAll(res.Body)
+	if !strings.Contains(string(data), "User Id:1") {
+		t.Fatalf("Failed!: response body is not contained \"Get UserInfo\"\nexpected:%s\nactual:%s", "User Id:1", string(data))
+	}
+}
