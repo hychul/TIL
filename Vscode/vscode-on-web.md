@@ -120,4 +120,4 @@ $ source ~/.bashrc
 
 ![vscode-on-ipad-007](https://user-images.githubusercontent.com/18159012/79640614-6f12c000-81cd-11ea-9f08-2a085ede0527.PNG)
 
-공유기의 IP의 경우 동적 IP 연결로 되어있는 경우 IP의 주소가 바뀔 가능성이 존재한다. 공유기에서 DDNS를 지원한다면 설정하여 더 간편하게 사용할 수 있다.
+공유기의 IP의 경우 동적 IP 연결로 되어있는 경우 IP의 주소가 바뀔 가능성이 존재한다. 공유기에서 DDNS를 지원한다면 설정하여 더 간편하게 사용할 수 있다. ~~iptime은 DDNS를 지원한다.~~
