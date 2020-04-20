@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIndexPathHandler(t *testing.T) {
@@ -79,4 +81,67 @@ func TestUserPathHandler_WithJson(t *testing.T) {
 	if user.Email != "hychome@gmail.com" {
 		t.Fatalf("Failed!: name is not equal\nexpected : %s\nactual : %s", "hychome@gmail.com", user.Email)
 	}
+}
+
+func TestIndexPathHandler_WithAssert(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", "/", nil)
+
+	mux := NewHttpHandler()
+	mux.ServeHTTP(res, req)
+
+	assert.Equal(http.StatusOK, res.Code)
+
+	data, _ := ioutil.ReadAll(res.Body)
+	assert.Equal("Hello Web", string(data))
+}
+
+func TestEchoPathHandler_WithAssert(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", "/echo?text=test", nil)
+
+	mux := NewHttpHandler()
+	mux.ServeHTTP(res, req)
+
+	assert.Equal(http.StatusOK, res.Code)
+
+	data, _ := ioutil.ReadAll(res.Body)
+	assert.Equal("test", string(data))
+}
+
+func TestUserPathHandler_WithoutJson_WithAssert(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/user", nil)
+
+	mux := NewHttpHandler()
+	mux.ServeHTTP(res, req)
+
+	assert.Equal(http.StatusBadRequest, res.Code)
+}
+
+func TestUserPathHandler_WithJson_WithAssert(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/user", strings.NewReader(`{"name":"hychul", "email":"hychome@gmail.com"}`))
+
+	mux := NewHttpHandler()
+	mux.ServeHTTP(res, req)
+
+	if res.Code != http.StatusOK {
+		t.Fatal("Failed!: response code is not equal", res.Code)
+	}
+
+	user := new(User)
+	err := json.NewDecoder(res.Body).Decode(user)
+	assert.NoError(err)
+
+	assert.Equal("hychul", user.Name)
+	assert.Equal("hychome@gmail.com", user.Email)
 }
