@@ -1,0 +1,14 @@
+{{if .IsAdmin -}}
+[Admin] ID : {{.ID}}
+{{else -}}
+ID : {{.ID}}
+{{end -}}
+Name : {{.Name}}
+Email: {{.Email}}
+
+<a href="/user?email={{.Email}}">user</a>
+<script>
+var email={{.Email}}
+var name={{.Name}}
+var id={{.ID}}
+</script>
