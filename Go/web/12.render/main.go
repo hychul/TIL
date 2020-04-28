@@ -22,6 +22,11 @@ type User struct {
 	Email string `json:email`
 }
 
+func getIndexHandler(w http.ResponseWriter, r *http.Request) {
+	// rd.HTML(w, http.StatusOK, "index-tmpl", "Hychul")
+	rd.HTML(w, http.StatusOK, "index-html", "Hychul")
+}
+
 func getUserHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -62,9 +67,13 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	rd = render.New()
+	rd = render.New(render.Options{
+		Directory:  "htmls",
+		Extensions: []string{".html", ".tmpl"},
+	})
 	mux := pat.New()
 
+	mux.Get("/", getIndexHandler)
 	mux.Get("/users", getUserHandler)
 	mux.Post("/users", createUserHandler)
 
