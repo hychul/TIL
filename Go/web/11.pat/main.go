@@ -19,6 +19,16 @@ type User struct {
 	Email string `json:email`
 }
 
+func getIndexHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("Index").ParseFiles("templates/index.tmpl")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, err)
+		return
+	}
+	tmpl.ExecuteTemplate(w, "index.tmpl", "Hychul")
+}
+
 func getUserHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -70,6 +80,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := pat.New()
 
+	mux.Get("/", getIndexHandler))
 	mux.Get("/users", getUserHandler)
 	mux.Post("/users", createUserHandler)
 
