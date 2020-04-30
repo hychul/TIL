@@ -42,3 +42,17 @@ rd = render.New(render.Options{
     Layout:     "index",
 })
 ```
+
+또한 레이아웃 안에서 구성되는 이너 템플릿 마다 다른 값을 주고 싶을 수 있다. 예를 들면 html의 title이 이너 템플릿 마다 다른 이름으로 하고 싶은 경우 `partial` 을 사용한다. 다음과 같이 partial 뒤에 quotes를 붙인 문자열로 키값을 지정하고 템플릿이 보관된 디렉토리 안에 '[키]-[이너 템플릿 파일]'로 템플릿을 생성하면 이너 템플릿에 해당하는 템플릿이 `partial`에 적용된다.
+
+```html
+<html>
+<head>
+<title>{{ partial "title" }}</title>
+</head>
+<body>
+Hello Web 
+{{ yield }}
+</body>
+</html>
+```
