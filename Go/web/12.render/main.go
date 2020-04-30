@@ -24,7 +24,8 @@ type User struct {
 
 func getIndexHandler(w http.ResponseWriter, r *http.Request) {
 	// rd.HTML(w, http.StatusOK, "index-tmpl", "Hychul")
-	rd.HTML(w, http.StatusOK, "index-html", "Hychul")
+	user := User{Name: "Hychul", Email: "hychome@gmail.com"}
+	rd.HTML(w, http.StatusOK, "body-html", user)
 }
 
 func getUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +71,7 @@ func main() {
 	rd = render.New(render.Options{
 		Directory:  "htmls",
 		Extensions: []string{".html", ".tmpl"},
+		Layout:     "index-html",
 	})
 	mux := pat.New()
 

@@ -16,7 +16,29 @@ rd = render.New(render.Options{
 
 ```go
 rd = render.New(render.Options{
-    Directory: "htmls",
+    Directory:  "htmls",
     Extensions: []string{".html", ".tmpl"},
+})
+```
+
+`redner`를 사용하면 레이아웃을 지정하여 템플릿을 재사용할 수 있다. 홈페이지를 구성하는 html 에서 페이지마다 중복을 사용되는 부분을 지정하고 그 페이지 안에서 다른 템플릿을 가져올때 처럼 `{{ yield }}` 구문을 삽입하여 사용된다. yield를 통해 다른 템플릿으로 구성할 수 있게 된다.
+
+```html
+<html>
+<head>
+<title>Index</title>
+</head>
+<body>
+Hello Web 
+{{ yield }}
+</body>
+</html>
+```
+
+```go
+rd = render.New(render.Options{
+    Directory:  "htmls",
+    Extensions: []string{".html", ".tmpl"},
+    Layout:     "index",
 })
 ```
