@@ -79,6 +79,7 @@ func main() {
 	mux.Get("/users", getUserHandler)
 	mux.Post("/users", createUserHandler)
 
+	// TODO: Find how to set non-root directory of 'public' is served
 	n := negroni.Classic()
 	n.UseHandler(mux)
 
