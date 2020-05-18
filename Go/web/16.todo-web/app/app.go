@@ -33,14 +33,15 @@ func getTodoListHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func addTodoHandler(w http.ResponseWriter, r *http.Request) {
-
+	name := r.FormValue("name")
+	id := len(todoMap) + 1
+	todo := &Todo{id, name, false, time.Now()}
+	todoMap[id] = todo
+	rd.JSON(w, http.StatusOK, todo)
 }
 
 func MakeHandler() http.Handler {
 	todoMap = make(map[int]*Todo)
-
-	todoMap[1] = &Todo{1, "First", false, time.Now()}
-	todoMap[2] = &Todo{2, "Second", true, time.Now()}
 
 	rd = render.New()
 	mux := mux.NewRouter()
