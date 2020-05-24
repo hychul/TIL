@@ -32,7 +32,7 @@ func getTodoListHandler(w http.ResponseWriter, r *http.Request) {
 	rd.JSON(w, http.StatusOK, list)
 }
 
-func addTodoHandler(w http.ResponseWriter, r *http.Request) {
+func createTodoHandler(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	id := len(todoMap) + 1
 	todo := &Todo{id, name, false, time.Now()}
@@ -48,7 +48,7 @@ func MakeHandler() http.Handler {
 
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/todos", getTodoListHandler).Methods("GET")
-	mux.HandleFunc("/todos", addTodoHandler).Methods("POST")
+	mux.HandleFunc("/todos", createTodoHandler).Methods("POST")
 
 	return mux
 }
