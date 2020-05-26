@@ -45,8 +45,10 @@
             $.ajax({
                 url: "todos/" + id,
                 type: "DELETE",
-                success: function() {
-                    $self.parent().remove();
+                success: function(e) {
+                    if (e.success) {
+                        $self.parent().remove();
+                    }
                 }
             })
             // $(this).parent().remove();
