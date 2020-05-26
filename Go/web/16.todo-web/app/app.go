@@ -45,6 +45,19 @@ type Success struct {
 	Success bool `json:"success"`
 }
 
+func updateTodoHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+	complete := r.FormValue("complete") == "true"
+
+	if todo, ok := todoMap[id]; ok {
+		todo.Completed = complete
+		rd.JSON(w, http.StatusOK, Success{true})
+	} else {
+		rd.JSON(w, http.StatusOK, Success{false})
+	}
+}
+
 func removeTodoHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
@@ -66,6 +79,7 @@ func MakeHandler() http.Handler {
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/todos", getTodoListHandler).Methods("GET")
 	mux.HandleFunc("/todos", createTodoHandler).Methods("POST")
+	mux.HandleFunc("/todos/{id:[0-9]+}", updateTodoHandler).Methods("PUT")
 	mux.HandleFunc("/todos/{id:[0-9]+}", removeTodoHandler).Methods("DELETE")
 
 	return mux
