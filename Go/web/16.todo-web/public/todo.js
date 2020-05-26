@@ -40,7 +40,16 @@
         });
         
         todoListItem.on('click', '.remove', function() {
-            $(this).parent().remove();
+            var id = $(this).closest("li").attr('id')
+            var $self = $(this)
+            $.ajax({
+                url: "todos/" + id,
+                type: "DELETE",
+                success: function() {
+                    $self.parent().remove();
+                }
+            })
+            // $(this).parent().remove();
         });
     });
 })(jQuery);

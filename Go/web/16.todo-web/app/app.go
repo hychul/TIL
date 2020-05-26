@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -40,6 +41,22 @@ func createTodoHandler(w http.ResponseWriter, r *http.Request) {
 	rd.JSON(w, http.StatusOK, todo)
 }
 
+type Success struct {
+	Success bool `json:"success"`
+}
+
+func removeTodoHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	if _, ok := todoMap[id]; ok {
+		delete(todoMap, id)
+		rd.JSON(w, http.StatusOK, Success{true})
+	} else {
+		rd.JSON(w, http.StatusOK, Success{false})
+	}
+}
+
 func MakeHandler() http.Handler {
 	todoMap = make(map[int]*Todo)
 
@@ -49,6 +66,7 @@ func MakeHandler() http.Handler {
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/todos", getTodoListHandler).Methods("GET")
 	mux.HandleFunc("/todos", createTodoHandler).Methods("POST")
+	mux.HandleFunc("/todos/{id:[0-9]+}", removeTodoHandler).Methods("DELETE")
 
 	return mux
 }
