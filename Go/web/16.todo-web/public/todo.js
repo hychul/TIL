@@ -30,9 +30,9 @@
         });
         
         todoListItem.on('change', '.checkbox', function() {
-            var id = $(this).closest("li").attr('id')
-            var $self = $(this)
-            var completed = $self.attr('checked') != 'checked'
+            var id = $(this).closest("li").attr('id');
+            var $self = $(this);
+            var completed = $self.attr('checked') != 'checked';
 
             $.ajax({
                 url: "todos/" + id + "?complete=" + completed,
@@ -46,13 +46,13 @@
                 
                     $self.closest("li").toggleClass('completed');
                 }
-            })
+            });
         });
         
         todoListItem.on('click', '.remove', function() {
-            var id = $(this).closest("li").attr('id')
-            var $self = $(this)
-            
+            var id = $(this).closest("li").attr('id');
+            var $self = $(this);
+
             $.ajax({
                 url: "todos/" + id,
                 type: "DELETE",
@@ -61,7 +61,7 @@
                         $self.parent().remove();
                     }
                 }
-            })
+            });
         });
     });
 })(jQuery);
