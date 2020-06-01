@@ -38,7 +38,7 @@ func createTodoHandler(w http.ResponseWriter, r *http.Request) {
 	id := len(todoMap) + 1
 	todo := &Todo{id, name, false, time.Now()}
 	todoMap[id] = todo
-	rd.JSON(w, http.StatusOK, todo)
+	rd.JSON(w, http.StatusCreated, todo)
 }
 
 type Success struct {
