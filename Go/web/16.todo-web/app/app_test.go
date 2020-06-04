@@ -77,7 +77,6 @@ func TestGetTodos(t *testing.T) {
 }
 
 func TestUpdateTodo(t *testing.T) {
-func TestUpdateTodo(t *testing.T) {
 	// given
 	assert := assert.New(t)
 	ts := httptest.NewServer(MakeHandler())
