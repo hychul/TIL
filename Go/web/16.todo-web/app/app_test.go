@@ -126,3 +126,51 @@ func TestUpdateTodo(t *testing.T) {
 		}
 	}
 }
+
+func TestDeleteTodo(t *testing.T) {
+	// given
+	assert := assert.New(t)
+	ts := httptest.NewServer(MakeHandler())
+
+	defer ts.Close()
+
+	resp, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo 1"}})
+	assert.NoError(err)
+	assert.Equal(http.StatusCreated, resp.StatusCode)
+	var todo Todo
+	err = json.NewDecoder(resp.Body).Decode(&todo)
+	assert.NoError(err)
+	assert.Equal(todo.Name, "Test todo 1")
+	id1 := todo.ID
+
+	resp, err = http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo 2"}})
+	assert.NoError(err)
+	assert.Equal(http.StatusCreated, resp.StatusCode)
+	err = json.NewDecoder(resp.Body).Decode(&todo)
+	assert.NoError(err)
+	assert.Equal(todo.Name, "Test todo 2")
+	id2 := todo.ID
+
+	// when
+	req, _ := http.NewRequest("DELETE", ts.URL+"/todos/"+strconv.Itoa(id1), nil)
+	resp, err = http.DefaultClient.Do(req)
+
+	// then
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+	resp, err = http.Get(ts.URL + "/todos")
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+	todos := []*Todo{}
+	err = json.NewDecoder(resp.Body).Decode(&todos)
+	assert.NoError(err)
+	assert.Equal(len(todos), 1)
+	for _, t := range todos {
+		if t.ID == id2 {
+			assert.Equal(t.Name, "Test todo 2")
+			assert.Equal(t.Completed, false)
+		} else {
+			assert.Error(fmt.Errorf("ID MUST BE %d", id2))
+		}
+	}
+}
