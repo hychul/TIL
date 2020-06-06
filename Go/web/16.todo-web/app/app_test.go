@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"testing"
 
+	"example.com/todo/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,7 +26,7 @@ func TestAddTodo(t *testing.T) {
 	//then
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
-	var todo Todo
+	var todo model.Todo
 	err = json.NewDecoder(resp.Body).Decode(&todo)
 	assert.NoError(err)
 	assert.Equal(todo.Name, "Test todo")
@@ -41,7 +42,7 @@ func TestGetTodos(t *testing.T) {
 	resp, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo 1"}})
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
-	var todo Todo
+	var todo model.Todo
 	err = json.NewDecoder(resp.Body).Decode(&todo)
 	assert.NoError(err)
 	assert.Equal(todo.Name, "Test todo 1")
@@ -61,7 +62,7 @@ func TestGetTodos(t *testing.T) {
 	// then
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
-	todos := []*Todo{}
+	todos := []*model.Todo{}
 	err = json.NewDecoder(resp.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 2)
@@ -86,7 +87,7 @@ func TestUpdateTodo(t *testing.T) {
 	resp, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo 1"}})
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
-	var todo Todo
+	var todo model.Todo
 	err = json.NewDecoder(resp.Body).Decode(&todo)
 	assert.NoError(err)
 	assert.Equal(todo.Name, "Test todo 1")
@@ -110,7 +111,7 @@ func TestUpdateTodo(t *testing.T) {
 	resp, err = http.Get(ts.URL + "/todos")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
-	todos := []*Todo{}
+	todos := []*model.Todo{}
 	err = json.NewDecoder(resp.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 2)
@@ -137,7 +138,7 @@ func TestDeleteTodo(t *testing.T) {
 	resp, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo 1"}})
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)
-	var todo Todo
+	var todo model.Todo
 	err = json.NewDecoder(resp.Body).Decode(&todo)
 	assert.NoError(err)
 	assert.Equal(todo.Name, "Test todo 1")
@@ -161,7 +162,7 @@ func TestDeleteTodo(t *testing.T) {
 	resp, err = http.Get(ts.URL + "/todos")
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
-	todos := []*Todo{}
+	todos := []*model.Todo{}
 	err = json.NewDecoder(resp.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 1)
