@@ -27,10 +27,6 @@ func createTodoHandler(w http.ResponseWriter, r *http.Request) {
 	rd.JSON(w, http.StatusCreated, todo)
 }
 
-type Success struct {
-	Success bool `json:"success"`
-}
-
 func updateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
@@ -38,9 +34,9 @@ func updateTodoHandler(w http.ResponseWriter, r *http.Request) {
 
 	ok := model.CompleteTodo(id, complete)
 	if ok {
-		rd.JSON(w, http.StatusOK, Success{true})
+		rd.JSON(w, http.StatusOK, model.Success{true})
 	} else {
-		rd.JSON(w, http.StatusOK, Success{false})
+		rd.JSON(w, http.StatusOK, model.Success{false})
 	}
 }
 
@@ -50,9 +46,9 @@ func removeTodoHandler(w http.ResponseWriter, r *http.Request) {
 
 	ok := model.RemoveTodo(id)
 	if ok {
-		rd.JSON(w, http.StatusOK, Success{true})
+		rd.JSON(w, http.StatusOK, model.Success{true})
 	} else {
-		rd.JSON(w, http.StatusOK, Success{false})
+		rd.JSON(w, http.StatusOK, model.Success{false})
 	}
 }
 

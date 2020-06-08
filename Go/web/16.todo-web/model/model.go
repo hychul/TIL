@@ -9,6 +9,10 @@ type Todo struct {
 	CreateAt  time.Time `json:"create_at"`
 }
 
+type Success struct {
+	Success bool `json:"success"`
+}
+
 var todoMap map[int]*Todo
 
 func init() {
