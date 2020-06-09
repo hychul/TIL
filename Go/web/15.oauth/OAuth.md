@@ -6,10 +6,10 @@
 
 하지만 개인정보에 대한 비용이 발생하기 때문에 민감하지 않거나 해당 기능에 대한 요청이 적은 경우 무료로 제공하고 있다.
 
-User - sign in -> My Web -- OAuth ---> Google
-                    |    <- callback -
-                    |       {refresh key, api key} // api key를 통해 user 정보에 접근 가능
-                    |
+User - sign in -> My Web -- OAuth ---> Google  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;┃&ensp;&ensp;<-&ensp;callback&ensp;━━┛  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;┃&ensp;&ensp;&ensp;&ensp;&ensp;{refresh key, api key} // api key를 통해 user 정보에 접근 가능  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;┃  
 
 
 
