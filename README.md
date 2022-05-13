@@ -1,2 +1,2 @@
 # TIL
-I writing something what I learned about whatever its category is.
+Writing something what I learned about whatever its category is.
